@@ -1,0 +1,166 @@
+---
+title: "sdp_explore"
+output: html_document
+date: '2023-02-03'
+---
+
+### Stochastic Dynamic Programming optimality model
+
+In this Rmd you can explore the outputs of the stochastic dynamic programming optimality model detailed in
+Fedorova & McElreath (2023). 
+
+In short, the model explores the trade-offs between building, moving, and saving, over time.The output is an optimal strategy through time, depending on the parameter space and what final payoff scenario is being optimized. The optimal strategy cannot be viewed directly, so instead we present two output forms:
+
+1. Frequencies of behavior over time - how many modelled households are building, saving, or moving at any given timepoint?
+2. Dwelling transition trajectories: When are households changing, or not, their dwelling type? 
+
+
+```{r setup, include=FALSE}
+source("Functions/run_sdp.R")
+source("Functions/transition_contrast_function.R")
+
+tr <- 0.9 # transparency
+colors <- c("#FF5733", "#7DCFF7","#772854") # orange is build, blue is save, prune is move
+colors <- adjustcolor(colors, tr)
+
+
+tr <- 0.6
+cols <- c(adjustcolor( "#994048", alpha.f = tr), # dark red, mobile - mobile
+          adjustcolor( "#232160", alpha.f = tr), # dark blue, fixed - fixed
+          adjustcolor( "#76A2D0", alpha.f = tr), # light blue, mobile - fixed
+          adjustcolor( "#C4687C", alpha.f = tr)) # light red, fixed - mobile
+
+tr <- 1
+legend_cols <- c(adjustcolor( "#994048", alpha.f = tr), # dark red, mobile - mobile
+          adjustcolor( "#232160", alpha.f = tr), # dark blue, fixed- fixed
+          adjustcolor( "#76A2D0", alpha.f = tr), # light blue, mobile - fixed
+          adjustcolor( "#C4687C", alpha.f = tr)) # light red, fixed - mobile
+
+lwd = 1
+
+```
+
+In the following section you can input values into the parameter space.
+
+@param scenario: thefinal payoff scenario, what is being optimized for, 2 = material baseline, 3 = family baseline, 4 = additive, 6 = house priority
+@param maxt: time to run the optimal model to
+@param p_s_save: probability of increasing in saving state if behavior is saving
+@param p_l_move: probability of increasing land state if behavior is move
+@param p_h_build: probability of increasing house state if behavior is move
+@param p_s_loss: probability of losing saving state in any t
+@param p_force_move: probability of being forced to move in any t
+@param build_condition: are savings required for building? 0 = no, 1 = yes
+@param N: number of households to generate in forward simulation
+
+```{r}
+  scenario <- 6
+  
+  maxt <- 41
+  p_s_save <- 0.9
+  p_l_move <- 0.3
+  p_h_build <- 1
+  p_s_loss <- 0.5
+  p_force_move <- 0.5
+  build_condition <- 0
+  
+  N <- 1000
+
+```
+
+
+
+```{r}
+sim_data <- run_sdp(
+  scenario = scenario,
+  maxt = maxt,
+  p_s_save = p_s_save,
+  p_l_move = p_l_move,
+  p_h_build = p_h_build,
+  p_s_loss = p_s_loss,
+  p_force_move = p_force_move,
+  build_condition = build_condition,
+  N = 1000
+)
+
+# summarize frequencies
+beh_freq <- matrix(data = 0, nrow = maxt, ncol = 3)
+colnames(beh_freq) <- c("build", "save", "move")
+
+for(t in 1:maxt){
+  sim_output_t <- table(sim_data[ ,"beh", t])
+  
+  beh_freq[t,"build"] <- sim_output_t["build"]
+  beh_freq[t,"save"] <- sim_output_t["save"]
+  beh_freq[t,"move"] <- sim_output_t["move"]
+}
+beh_freq[is.na(beh_freq)] <- 0
+
+# simulate data
+reference_data <- generate_reference_data(
+  scenario = scenario,
+  maxt = maxt,
+  p_s_save = p_s_save,
+  p_l_move = p_l_move,
+  p_h_build = p_h_build,
+  p_s_loss = p_s_loss,
+  p_force_move = p_force_move,
+  build_condition = build_condition,
+  N = 1000
+)
+
+```
+
+## 1. Behavioral frequencies 
+
+```{r, echo=FALSE}
+plot(x = 1, y = 1, 
+     main = "Behavioral frequencies for simulation run",
+     xlab = "time", 
+     ylab = "frequency",
+     type = "n", 
+     xlim = c(0, maxt), 
+     ylim = c(0, 1000),
+     xaxt = "n",
+     yaxt = "n",
+     bty = "n")
+axis(1, at = seq(0, maxt, by = 10))
+axis(2, at = seq(0, 1000, by = 500), labels = TRUE)
+legend(x=30, y=N/2, legend=c("Build", "Save", "Move"), 
+   text.col = c(colors[1], colors[2], colors[3]), bty = "n")
+
+
+for (e in 1:ncol(beh_freq)) {
+  xs <- c()
+  ys <- c()
+  for(t in 1:maxt){
+    xs <- c(xs, t)
+    ys <- unname(beh_freq[ ,e])
+  }
+  lines(xs, ys, col=colors[e], lwd = 1, lty = 1)
+}
+
+```
+
+
+## 2. Dwelling transition trajectories
+
+```{r, echo=FALSE}
+
+plot(x = 1, xlim = c(0,45), ylim = c(0.7,2.3), type = "n",
+     yaxt = "n",
+     ylab = "House state",
+     xlab = "Time in Ulaanbaatar",
+     main = "Dwelling transitions",
+     bty = "n"
+)
+axis(2, at = c(1,2), labels = c("mobile", "fixed"))
+legend(x=30, y=1.7, legend=c("mobile-mobile", "mobile-fixed", "fixed-fixed", "fixed-mobile"), 
+   text.col = c(legend_cols[1],legend_cols[3], legend_cols[2], legend_cols[4]), bty = "n")
+
+transition_contrast(reference_data = reference_data)
+
+```
+
+
+
+
