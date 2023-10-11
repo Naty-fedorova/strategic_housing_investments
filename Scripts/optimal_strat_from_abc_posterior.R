@@ -43,6 +43,8 @@ for(i in 1:nrow(jobs)){
 
 png(filename = "Figures/inferred_optimal_strategy.png", width = 15, height = 10, units = "cm", res = 1000)
 
+par(family = "serif")
+
 tr <- 0.6
 colors <- c("#FF5733", "#7DCFF7","#772854") # orange is build, blue is save, prune is move (order is orange, blue, prune )
 colors <- adjustcolor(colors, tr)
@@ -53,8 +55,10 @@ plot(x = 1, y = 1,
      ylab = "Behavioral frequency",
      type = "n", 
      xlim = c(0, 40), 
-     ylim = c(0, 1000),
+     ylim = c(0,1000),
+     yaxt = "n",
      bty = "n")
+axis(2, at = c(0,500,1000), label = c(0,500,1000))
 
 # all
 for(i in 1:nrow(jobs)){

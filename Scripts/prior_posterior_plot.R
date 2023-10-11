@@ -12,11 +12,12 @@ comb_test <- abc_output[[3]]
 prior_col <- "#6e793e"
 posterior_col <- "#793e6e"
 
-png(filename = "Figures/posteriors_1e6.png", width = 15, height = 10, units = "cm", res = 500)
+png(filename = "Figures/posteriors_1e6.png", width = 14, height = 10, units = "cm", res = 500)
 
 par(mfrow = c(2,3), 
     mar = c(3,3,3,2),
-    oma = c(1,1,4,1))
+    oma = c(1,1,4,1),
+    family = "serif")
 
 nf <- layout(matrix(c(1,1,2,2,3,3,0,4,4,5,5,0), nrow = 2, byrow = TRUE))
 layout.show(nf)
@@ -34,7 +35,7 @@ axis(1, at = c(0,0.25,0.5,0.75,1))
 axis(2, at = c(0, 5, 10))
 mtext("probability value", side = 1, line = 2, cex = 0.75)
 mtext("density", side = 2, line = 2, cex = 0.75)
-text(x = 0.34, y = 8, "posterior", col = posterior_col)
+text(x = 0.37, y = 8, "posterior", col = posterior_col)
 text(x = 0.5, y = 2.8, "prior", col = prior_col)
 
 plot(density(comb_test$p_l_prior), ylim = c(0,10), 
@@ -79,7 +80,7 @@ barplot(test2,beside=T,
         ylab = "",
         xlab = "",
         border = NA)
-axis(1, at = c(2,5,8), labels = c("fb", "add", "h_p"))
+axis(1, at = c(2,5,8), labels = c("f_p", "add", "h_p"))
 axis(2, at = c(0,300,600))
 mtext("payoff value", side = 1, line = 2, cex = 0.75)
 mtext("frequency", side = 2, line = 2, cex = 0.75)

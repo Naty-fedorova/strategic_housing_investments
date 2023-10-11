@@ -72,11 +72,12 @@ names(reference_data_6_1)[names(reference_data_6_1) == "h_state"] <- "house_stat
 
 
 
-png(filename = "Figures/contrast_transition_plot_n.png", width = 25 , height = 15, units = "cm", res = 500)
+png(filename = "Figures/contrast_transition_plot.png", width = 17 , height = 12, units = "cm", res = 500)
 
 par(mfrow = c(2,3), 
     mar = c(4,4,4,0),
-    oma = c(2,2,2,0))
+    oma = c(2,2,2,0),
+    family = "serif")
 
 # nf <- layout(matrix(c(1,2,3,4,5,6,7,7), nrow = 4, ncol = 2, byrow = TRUE))
 # layout.show(nf)
@@ -85,18 +86,19 @@ par(mfrow = c(2,3),
 # fam baseline, bc = 0
 plot(x = 1, xlim = c(0,45), ylim = c(0.7,2.3), type = "n",
      yaxt = "n",
-     ylab = "House state",
+     ylab = "",
      xlab = "Time in Ulaanbaatar",
      main = "",
      bty = "n"
 )
 axis(2, at = c(1,2), labels = c("mobile", "fixed"))
+mtext("Behavioral frequency", side = 2, line = 2)
 
 mtext("Building condition contrast for dwelling transitions", side = 3, outer = TRUE)
 
 mtext("I.", side = 3, line = 1, at = -5)
-mtext("Family baseline", side = 3, line = 1, outer = FALSE)
-mtext("Build condition = 0", side = 2, line = 4)
+mtext("Family priority", side = 3, line = 1, outer = FALSE)
+mtext(substitute(bold("Build condition = 0")), side = 2, line = 4)
 
 transition_contrast(reference_data = reference_data_3_0)
 
@@ -104,7 +106,7 @@ transition_contrast(reference_data = reference_data_3_0)
 # additive bc = 0
 plot(x = 1, xlim = c(0,45), ylim = c(0.7,2.3), type = "n",
      yaxt = "n",
-     ylab = "House state",
+     ylab = "",
      xlab = "",
      main = "",
      bty = "n"
@@ -119,7 +121,7 @@ transition_contrast(reference_data = reference_data_4_0)
 # house bc = 0
 plot(x = 1, xlim = c(0,45), ylim = c(0.7,2.3), type = "n",
      yaxt = "n",
-     ylab = "House state",
+     ylab = "",
      xlab = "",
      main = "",
      bty = "n"
@@ -129,7 +131,6 @@ mtext("III.", side = 3, line = 1, at = -5)
 mtext("House priority", side = 3, line = 1, outer = FALSE)
 
 transition_contrast(reference_data = reference_data_6_0)
-
 
 
 
@@ -144,7 +145,7 @@ plot(x = 1, xlim = c(0,45), ylim = c(0.7,2.3), type = "n",
 )
 axis(2, at = c(1,2), labels = c("mobile", "fixed"))
 mtext("IV.", side = 3, line = 1, at = -5)
-mtext("Build condition = 1", side = 2, line = 4)
+mtext(substitute(bold("Build condition = 1")), side = 2, line = 4)
 
 transition_contrast(reference_data = reference_data_3_1)
 
@@ -180,25 +181,6 @@ mtext("VI.", side = 3, line = 1, at = -5)
 
 transition_contrast(reference_data = reference_data_6_1)
 
-# legend
-# plot(x = 1, xlim = c(0,45), ylim = c(0.7,2.3), type = "n",
-#      yaxt = "n",
-#      xaxt = "n",
-#      ylab = "",
-#      xlab = "",
-#      main = "Legend",
-#      bty = "n"
-# )
-#axis(2, at = c(1,2), labels = c("ger", "bashin"))
-# legend(x = "center", y = 1.7, legend = c("Ger", "Bashin", "G.to B.", "B.to G."),
-#        col = legend_cols,
-#        lwd = 4,
-#        bty = "n",
-#        y.intersp = 0.75,
-#        cex = 2)
-#mtext("F.", side = 3, line = 1, at = -20)
-
-
 dev.off()
 
 
@@ -210,7 +192,8 @@ dev.off()
 
 build_table_s <- build_table
 
-png(filename = "contrast_transition_plot_ub.png", width = 15 , height = 10, units = "cm", res = 500)
+png(filename = "Figures/contrast_transition_plot_ub.png", width = 17 , height = 10, units = "cm", res = 500)
+par(family = "serif")
 plot(x = 1, xlim = c(0,90), ylim = c(0.7,2.3), type = "n",
      yaxt = "n",
      ylab = "House state",
@@ -219,6 +202,7 @@ plot(x = 1, xlim = c(0,90), ylim = c(0.7,2.3), type = "n",
      bty = "n"
 )
 axis(2, at = c(1,2), labels = c("ger", "bashin"))
+
 for(i in 1:nrow(build_table_s)){
   
   time_seq <- build_table_s[i,2:ncol(build_table_s)]
@@ -233,7 +217,7 @@ for(i in 1:nrow(build_table_s)){
     
     transition <- unique(time_seq)
     
-    print(transition)
+    #print(transition)
     
     if(length(transition) == 1){
       if(unique(transition) == 1){

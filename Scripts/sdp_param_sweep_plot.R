@@ -22,7 +22,7 @@ colors <- c("#FF5733", "#7DCFF7","#772854") # orange is build, blue is save, pru
 colors <- adjustcolor(colors, tr)
 
 all_sc <- c(2, 3, 4, 6)
-sc_names <- c("Baseline", "Family baseline", "Additive", "House priority")
+sc_names <- c("Baseline", "Family priority", "Additive", "House priority")
 at_l <- -5
 
 
@@ -44,7 +44,8 @@ for( i in all_sc ){
   png(filename = filename, width = 15, height = 30, units = "cm", res = 300)
   par(mfrow = c(6, 3),
       mar = c(2,4,2,0),
-      oma = c(4,4,4,4))
+      oma = c(4,4,4,4),
+      family = "serif")
   
   # p_s_save
   selected_set <- which(jobs$p_s_save == 0.25 & jobs$scenario == sc)

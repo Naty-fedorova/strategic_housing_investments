@@ -86,7 +86,10 @@ cols <- c(adjustcolor( "#994048", alpha.f = alf),
 
 lwd <- 1
 
-par(mfrow = c(1,1), mar = c(4,4,4,1))
+par(mfrow = c(1,1), 
+    mar = c(4,4,4,1),
+    family = "serif")
+
 plot(x = 1, xlim = c(0,45), ylim = c(0.7,2.3), type = "n",
      yaxt = "n",
      ylab = "House state",

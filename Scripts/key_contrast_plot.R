@@ -25,47 +25,73 @@ colors <- adjustcolor(colors, tr)
 
 
 
-png(filename = "Figures/payoff_trees.png", width = 25, height = 15, units = "cm", res = 500)
-
+png(filename = "Figures/payoff_trees.png", width = 17, height = 9, units = "cm", res = 500)
 par(mfrow = c(1, 3),
-    mar = c(3,2,3,1),
-    oma = c(0,0,4,0))
+    mar = c(3,1,3,0),
+    oma = c(0,0,4,0),
+    family = "serif")
 
-mtext("Family baseline", side = 3)
+mtext("Family Priority", side = 3)
 #mtext("A.", side = 3, line = 0, at = -1)
 
 scs <- c(3,4,6)
-texts <- c("Family Baseline", "Additive", "House Priority")
+texts <- c("Family Priority", "Additive", "House Priority")
 labs <- c("I.", "II.", "III.")
 
 for (i in 1:3) {
   sc <- scs[i]
   final_payoffs <- final_payoff_func(scenario = sc)
   if(i == 1){
-    payoff_tree(final_payoffs = final_payoffs, title = "", labs = "yes")
+    payoff_tree(final_payoffs = final_payoffs, title = "", labs = "yes", labs_leg = "no")
   } else{
-    payoff_tree(final_payoffs = final_payoffs, title = "", labs = "no")
+    payoff_tree(final_payoffs = final_payoffs, title = "", labs = "no", labs_leg = "no")
   }
   mtext(texts[i], side = 3)
   mtext(labs[i], side = 3, line = 0, at = -1)
 }
 
 mtext("Final payoffs for 3 optimisation scenarios", side = 3, line = 0, outer = TRUE, cex = 1.5)
-
 dev.off()
 
 
-png(filename = "Figures/key_contrast_plot.png", width = 25, height = 20, units = "cm", res = 500)
+png(filename = "Figures/payoff_trees_legend.png", width = 10, height = 5, units = "cm", res = 500)
+par(mfrow = c(1, 1),
+    mar = c(1,1,1,1),
+    oma = c(0,0,1,0),
+    family = "serif")
+
+plot(0, xaxt = 'n', yaxt = 'n', bty = 'n', pch = '', ylab = '', xlab = '', xlim = c(-1,0.3), ylim = c(-1,6.2))
+
+cex <- 1.5
+# legend binary states
+arrows(x0 = -1, y0 = 5, x1 = 0, y1 = 6, length = 0.0, lty = 2)
+arrows(x0 = -1, y0 = 5, x1 = 0, y1 = 4, length = 0.0, lty = 1)
+points(x = -1, y = 5, pch = 16)
+text(x = 0, y = 6, "no", cex = cex , pos = 4)
+text(x = 0, y = 4, "yes", cex = cex , pos = 4)
+
+# legend fam states
+arrows(x0 = -1, y0 = 1, x1 = 0, y1 = 2.5, length = 0.0, lty = 5)
+arrows(x0 = -1, y0 = 1, x1 = 0, y1 = 1, length = 0.0, lty = 4)
+arrows(x0 = -1, y0 = 1, x1 = 0, y1 = -0.5, length = 0.0, lty = 3)
+points(x = -1, y = 1, pch = 16)
+text(x = 0, y = 2.5, "single", cex = cex , pos = 4)
+text(x = 0, y = 1, "pair", cex = cex , pos = 4)
+text(x = 0, y = -0.5, "family", cex = cex , pos = 4)
+dev.off()
+
+
+png(filename = "Figures/key_contrast_plot.png", width = 17, height = 12, units = "cm", res = 500)
 
 par(mfrow = c(2, 3),
     mar = c(3,2,3,1),
-    oma = c(0,4,4,0))
+    oma = c(0,4,4,2),
+    family = "serif")
 
 
 ## build condition 0, sc 3
 selected_set <- which(jobs$build_condition == 0 & jobs$scenario == 3)
 
-#par(mar = c(1,1,2,1))
 plot(x = 1, y = 1, 
      main = "",
      xlab = "", 
@@ -82,7 +108,7 @@ axis(2, at = c(0,50, 100), labels = TRUE)
 mtext("Behavioral frequency", side = 2, line = 2)
 mtext("Time", side = 1, line = 3)
 mtext("IV.", side = 3, line = 0, at = -1)
-mtext("Family baseline", side = 3, line = 0, at = 20)
+mtext("Family priority", side = 3, line = 0, at = 20)
 
 mtext(substitute(bold("Build condition = 0")), side = 2, line = 4)
 
@@ -92,7 +118,6 @@ sweep_lines(selected_set = selected_set, beh_frq_sweep = beh_frq_sweep)
 ## build condition 0, sc 4
 selected_set <- which(jobs$build_condition == 0 & jobs$scenario == 4)
 
-#par(mar = c(1,1,1,1))
 plot(x = 1, y = 1, 
      xlab = "", 
      ylab = "",
@@ -112,7 +137,6 @@ sweep_lines(selected_set = selected_set, beh_frq_sweep = beh_frq_sweep)
 # build condition 0, sc 6
 selected_set <- which(jobs$build_condition == 0 & jobs$scenario == 6)
 
-par(mar = c(4,2,3,1))
 plot(x = 1, y = 1, 
      xlab = "", 
      ylab = "",
@@ -189,7 +213,7 @@ mtext("IX.", side = 3, line = 0, at = -1)
 
 sweep_lines(selected_set = selected_set, beh_frq_sweep = beh_frq_sweep)
 
-mtext("Build condition contrast plots for 3 optimisation scenarios", side = 3, line = 0, outer = TRUE, cex = 1.5)
+mtext("Build condition contrast plots for 3 optimisation scenarios", side = 3, line = 0, outer = TRUE, cex = 1.3)
 
 dev.off()
 

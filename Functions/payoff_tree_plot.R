@@ -10,7 +10,8 @@
 payoff_tree <- function(final_payoffs = final_payoffs, 
                         scenario = "default",
                         title = "type title",
-                        labs = "yes"){
+                        labs = "yes",
+                        labs_leg = "yes"){
   
   states_h <- 2
   states_s <- 2
@@ -97,30 +98,36 @@ payoff_tree <- function(final_payoffs = final_payoffs,
   
   
   if(labs == "yes"){
-  cex <- 1.2
+  cex <- 1.4
   # states are house, savings, tenure, family
   text(x = 0.7, y = 18, substitute(bold("House")), cex = cex , pos = 2, col = cols[1])
   text(x = 1.5, y = 22, substitute(bold("Savings")), cex = cex , pos = 2, col = cols[2])
   text(x = 2.3, y = 25, substitute(bold("Tenure")), cex = cex , pos = 2, col = cols[3])
   text(x = 3.3, y = 27, substitute(bold("Family")), cex = cex , pos = 2, col = cols[4])
   }
-  
-  cex <- 0.8
+ 
+  if(labs_leg == "yes"){
+  cex <- 1.3
   # legend binary states
-  arrows(x0 = -1, y0=4, x1=0.5, y1=5, length = 0.03, lty = 2)
-  arrows(-1, 4, 0.5, 3, length = 0.03, lty = 1)
-  points(x = -1, y = 4, pch = 16)
-  text(x = 0.5, y = 5, "1: no", cex = cex , pos = 4)
-  text(x = 0.5, y = 3, "2: yes", cex = cex , pos = 4)
+  arrows(x0 = -1, y0=5, x1=0, y1=6, length = 0.0, lty = 2)
+  arrows(-1, 5, 0, 4, length = 0.0, lty = 1)
+  
+  points(x = -1, y = 5, pch = 16)
+  
+  text(x = 0, y = 6, "no", cex = cex , pos = 4)
+  text(x = 0, y = 4, "yes", cex = cex , pos = 4)
   
   # legend fam states
-  arrows(x0 = -1, y0=1, x1=0.5, y1=2, length = 0.03, lty = 5)
-  arrows(x0 = -1, y0=1, x1=0.5, y1=1, length = 0.03, lty = 4)
-  arrows(-1, 1, 0.5, 0, length = 0.03, lty = 3)
+  arrows(x0 = -1, y0 = 1, x1 = 0, y1 = 2.5, length = 0.0, lty = 5)
+  arrows(x0 = -1, y0 = 1, x1 = 0, y1 = 1, length = 0.0, lty = 4)
+  arrows(x0 = -1, y0 = 1, x1 = 0, y1 = -0.5, length = 0.0, lty = 3)
+  
   points(x = -1, y = 1, pch = 16)
-  text(x = 0.5, y = 2, "1: single", cex = cex , pos = 4)
-  text(x = 0.5, y = 1, "2: pair", cex = cex , pos = 4)
-  text(x = 0.5, y = 0, "3: family", cex = cex , pos = 4)
+  
+  text(x = 0, y = 2.5, "single", cex = cex , pos = 4)
+  text(x = 0, y = 1, "pair", cex = cex , pos = 4)
+  text(x = 0, y = -0.5, "family", cex = cex , pos = 4)
+  }
   
 }
 

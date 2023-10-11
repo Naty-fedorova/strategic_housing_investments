@@ -137,11 +137,12 @@ output_col <- "#793e6e"
 
 
 
-png(filename = "Figures/val_and_post_pred.png", width = 17, height = 12, units = "cm", res = 500)
+png(filename = "Figures/val_and_post_pred.png", width = 15, height = 12, units = "cm", res = 500)
 
 par(mfrow = c(2,3), 
     mar = c(3,4,3,2),
-    oma = c(1,1,4,1))
+    oma = c(1,1,4,1),
+    family = "serif")
 
 nf <- layout(matrix(c(1,1,2,2,3,3,0,4,4,5,5,0), nrow = 2, byrow = TRUE))
 layout.show(nf)
@@ -230,14 +231,14 @@ for(i in 1:segment){
 # payoff
 plot(1,1, type = "n",
      xlim = c(1,segment),
-     ylim = c(0,6.5),
+     ylim = c(0,7.5),
      bty = "n",
      xlab = "",
      ylab = "",
      axes = FALSE,
      main = "Final payoffs")
 axis(1, at = 1:segment, labels = FALSE)
-axis(2, at = c(0,2,3,4,6), labels = c("", "bs", "fb", "add", "hp"))
+axis(2, at = c(0,2,3,4,6), labels = c("", "bs", "f_p", "add", "h_p"), las = 1)
 points(x = 1:segment, y = p_payoff[,"payoff_prior"], col = input_col, pch = 19, cex = circle_size)
 for(i in 1:segment){
   points(x = i, y = median(p_payoff_res[[i]][["payoff_prior"]]), col = output_col, cex = circle_size)
@@ -270,5 +271,100 @@ for(i in 1:segment){
 }
 
 dev.off()
+
+
+
+# TODO
+# if we just compare generated data sets, how different are they from each other?
+
+
+# generated data sets 
+gen_data_all <- abc_validated[[3]]
+count <- 10
+
+
+
+#  create data frame to store differences between reference and generated data
+diff_df <- data.frame(posterior_run = 1:count,
+                      diff_1_1 = rep(NA, count),
+                      diff_1_2 = rep(NA, count),
+                      diff_2_2 = rep(NA, count),
+                      diff_2_1 = rep(NA, count),
+                      
+                      diff_s1 = rep(NA, count),
+                      diff_s2 = rep(NA, count),
+                      diff_l1 = rep(NA, count),
+                      diff_l2 = rep(NA, count),
+                      diff_f1 = rep(NA, count),
+                      diff_f2 = rep(NA, count),
+                      diff_f3 = rep(NA, count),
+                      output = rep(NA, count)
+)
+
+
+for(i in 1:10){
+  j <- i + count
+  
+  generated_data <- as.data.frame(gen_data_all[i])
+  reference_data <- as.data.frame(gen_data_all[j])
+  
+  sim_tab <- as.data.frame(table(generated_data$type_trans))
+  ref_tab <- as.data.frame(table(reference_data$type_trans))
+  
+  if(nrow(sim_tab) < 4){
+    cat_vec <- c("1-1", "1-2", "2-2", "2-1")
+    sim_tab$Var1 <- as.character(sim_tab$Var1)
+    for(j in 1:4){
+      if(length(which(sim_tab$Var1 == cat_vec[j])) == 0){
+        add <- as.character(cat_vec[j])
+        sim_tab <- rbind(sim_tab, c(add, 0))
+      }
+    }
+    sim_tab$Var1 <- as.factor(sim_tab$Var1)
+  }
+  
+  if(nrow(ref_tab) < 4){
+    cat_vec <- c("1-1", "1-2", "2-2", "2-1")
+    ref_tab$Var1 <- as.character(ref_tab$Var1)
+    for(k in 1:4){
+      if(length(which(ref_tab$Var1 == cat_vec[k])) == 0){
+        add <- as.character(cat_vec[k])
+        ref_tab <- rbind(ref_tab, c(add, 0))
+      }
+    }
+    ref_tab$Var1 <- as.factor(ref_tab$Var1)
+  }
+  
+  sim_tab$Freq <- as.numeric(sim_tab$Freq)
+  ref_tab$Freq <- as.numeric(ref_tab$Freq)
+  
+  diff_df$diff_1_1[i] <- sim_tab$Freq[which(sim_tab$Var1 == "1-1")] - ref_tab$Freq[which(ref_tab$Var1 == "1-1")]
+  diff_df$diff_1_2[i] <- sim_tab$Freq[which(sim_tab$Var1 == "1-2")] - ref_tab$Freq[which(ref_tab$Var1 == "1-2")]
+  diff_df$diff_2_2[i] <- sim_tab$Freq[which(sim_tab$Var1 == "2-2")] - ref_tab$Freq[which(ref_tab$Var1 == "2-2")]
+  diff_df$diff_2_1[i] <- sim_tab$Freq[which(sim_tab$Var1 == "2-1")] - ref_tab$Freq[which(ref_tab$Var1 == "2-1")]
+  
+  diff_df$diff_s1[i] <- nrow(generated_data[which(generated_data$s_state == 1),]) - nrow(reference_data[which(reference_data$s_state == 1),])
+  diff_df$diff_s2[i] <- nrow(generated_data[which(generated_data$s_state == 2),]) - nrow(reference_data[which(reference_data$s_state == 2),])
+  diff_df$diff_l1[i] <- nrow(generated_data[which(generated_data$l_state == 1),]) - nrow(reference_data[which(reference_data$l_state == 1),])
+  diff_df$diff_l2[i] <- nrow(generated_data[which(generated_data$l_state == 2),]) - nrow(reference_data[which(reference_data$l_state == 2),])
+  diff_df$diff_f1[i] <- nrow(generated_data[which(generated_data$f_state == 1),]) - nrow(reference_data[which(reference_data$f_state == 1),])
+  diff_df$diff_f2[i] <- nrow(generated_data[which(generated_data$f_state == 2),]) - nrow(reference_data[which(reference_data$f_state == 2),])
+  diff_df$diff_f3[i] <- nrow(generated_data[which(generated_data$f_state == 3),]) - nrow(reference_data[which(reference_data$f_state == 3),])
+  
+  diff_df$output[i] <- abs(diff_df$diff_1_1[i]) + 
+    abs(diff_df$diff_1_2[i]) + 
+    abs(diff_df$diff_2_2[i]) + 
+    abs(diff_df$diff_2_1[i]) +
+    abs(diff_df$diff_s1[i]) +
+    abs(diff_df$diff_s2[i]) +
+    abs(diff_df$diff_l1[i]) +
+    abs(diff_df$diff_l2[i]) +
+    abs(diff_df$diff_f1[i]) +
+    abs(diff_df$diff_f2[i]) +
+    abs(diff_df$diff_f3[i])
+  
+  
+}
+
 
 
