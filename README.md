@@ -4,7 +4,7 @@
 
 How do households decide when to build a fixed, higher-investment dwelling? We construct a stochastic dynamic programming model that explores the trade-offs between building, moving, and saving that households must balance over time. We then test this model with data from the ger districts of Ulaanbaatar, Mongolia
 
-This repository contains all the code necessary for the manuscript "Strategic housing investments and the evolution of urban settlements: Optimality modeling and empirical application in central Asia" by Natalia Fedorova, Anne Kandler & Richard McElreath
+This repository contains all the code necessary for the manuscript "Strategic housing investments and the evolution of urban settlements: Optimality modeling and empirical application in Ulaanbaatar, Mongolia" by Natalia Fedorova, Anne Kandler & Richard McElreath
 
 
 
