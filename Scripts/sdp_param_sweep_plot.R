@@ -1,6 +1,6 @@
 source("Functions/sim_var_functions.R")
 
-sim_output <- readRDS("Data/sdp_model_param_sweep.RData")
+sim_output <- readRDS("Data/sdp_model_param_sweep_bc_fix.RDS")
 
 # generate jobs to sweep through
 jobs <- expand.grid(p_s_save = c(0.25, .5, .75),   
@@ -12,7 +12,7 @@ jobs <- expand.grid(p_s_save = c(0.25, .5, .75),
                     scenario = c(2, 3, 4, 6))
 
 
-maxt <- 40
+maxt <- 40  # this responds to timeframe optimality model is run for
 sim_runs <- length(sim_output[[1]])
 beh_frq_sweep <- beh_frq(sim_output = sim_output, sim_runs = sim_runs, maxt = maxt)
 
@@ -39,7 +39,7 @@ make_filename = function(label, number){
 for( i in all_sc ){
   sc <- i
   j <- which(all_sc == sc)
-  filename <- make_filename(label = "sdp_param_sweep_sc", number = i)
+  filename <- make_filename(label = "sdp_param_sweep_sc_bc_fix", number = i)
   
   png(filename = filename, width = 15, height = 30, units = "cm", res = 300)
   par(mfrow = c(6, 3),

@@ -7,7 +7,7 @@
 #'
 #' @return: final payoffs - a 2x2x2x3 array filling in the final payoff to each state space combination
 #' 
-final_payoff_func <- function(scenario = "baseline") {
+final_payoff_func <- function(scenario = 2) {
   
   ## states
   states_h <- 2            # number of states for house (ger, bashin)
@@ -437,7 +437,7 @@ UB_optimal <- function(
             if(s > build_condition){   # if you have enough savings to build
               
               # which is better?
-              # record optimal behavior 
+              # record optimal behavior
               
               possible_current_payoffs <- c(payoff_save, payoff_move, payoff_build) # there is order of preference here, if payoffs end up being equal
               # make note if payoffs are equal 
@@ -461,6 +461,7 @@ UB_optimal <- function(
               # which is better?
               # record optimal behavior 
               # and store expected payoff when behaving optimally
+              # Note: forward simulation accesses optimal strategy (i.e. beh) so we don't need to check if agent has enough savings to build again
               
               possible_current_payoffs <- c(payoff_save, payoff_move) # there is order of preference here, if payoffs end up being equal
               if((length(unique(possible_current_payoffs))== 2) == FALSE) print(c(possible_current_payoffs, h = h, s = s, l = l, f = f, t = t ))
@@ -638,7 +639,7 @@ sim_strat <- function(
     }
     
     
-    ## materialize state change | intialize states for t+1
+    ## materialize state change | initialize states for t+1
     
     if(t < maxt){
       for(agent in 1:N){
@@ -658,19 +659,18 @@ sim_strat <- function(
         s_down <- s-1
         if(s_down < 1) s_down <- 1
         
+        # change added for ub optimal correspondence - don't loose savings in bc = 0 condition
+        if(build_condition > 0){  
+          s_down_build <- s_down
+        } else{
+          s_down_build <- s
+        }
+        
         # land state
         l <- as.numeric(agent_prop[agent, "l_state", t])
         l_up <- l+1
         if(l_up > states_l) l_up <- states_l
-        l_down <- l-1
-        if(l_down < 1) l_down <- 1
         
-        # fam state
-        f <- as.numeric(agent_prop[agent, "f_state", t])
-        f_up <- f+1
-        if(f_up > states_f) f_up <- states_f
-        f_down <- f-1
-        if(f_down < 1) f_down <- 1
         
         # if agent builds
         if(agent_prop[agent, "beh", t] == "build"){
@@ -681,7 +681,7 @@ sim_strat <- function(
             # decrease in saving state
             
             agent_prop[agent, "h_state", t+1] <- h_up
-            agent_prop[agent, "s_state", t+1] <- s_down
+            agent_prop[agent, "s_state", t+1] <- s_down_build # changed from s_down
             agent_prop[agent, "l_state", t+1] <- l
             agent_prop[agent, "f_state", t+1] <- f
             
@@ -731,11 +731,11 @@ sim_strat <- function(
             
           }else{
             
-            # state changes if agent moves "unsuccessfully"
+            # state changes if agent moves "unsuccessfully" - the assumption is that moving unsuccessfully means staying
             # everything stays the same
             agent_prop[agent, "h_state", t+1] <- h
             agent_prop[agent, "s_state", t+1] <- s
-            agent_prop[agent, "l_state", t+1] <- l
+            agent_prop[agent, "l_state", t+1] <- l # l_down correction lacks correspondence with ub optimal
             agent_prop[agent, "f_state", t+1] <- f
             
           }

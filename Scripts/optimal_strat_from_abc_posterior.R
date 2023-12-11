@@ -3,7 +3,7 @@ source("Functions/sim_var_functions.R")
 source("Functions/abc_posterior.R")
 
 
-abc_output <- readRDS("Data/abc_output_1e6.RData")
+abc_output <- readRDS("Data/abc_output_1e6_bc_fix.RDS")
 
 # extract joint posterior
 abc_posterior <- create_abc_posterior(abc_output = abc_output[[1]], comb_test = abc_output[[3]], sample_size = 1000)
@@ -41,7 +41,7 @@ for(i in 1:nrow(jobs)){
 }
 
 
-png(filename = "Figures/inferred_optimal_strategy.png", width = 15, height = 10, units = "cm", res = 1000)
+png(filename = "Figures/inferred_optimal_strategy_bc_fix.png", width = 15, height = 10, units = "cm", res = 1000)
 
 par(family = "serif")
 

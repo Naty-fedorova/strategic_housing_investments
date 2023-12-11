@@ -9,7 +9,7 @@ source("Functions/transition_contrast_function.R")
 
 
 reference_data <- read_csv("Data/data_for_analysis.csv")
-abc_output <- readRDS("Data/abc_output_1e6.RData")
+abc_output <- readRDS("Data/abc_output_1e6_bc_fix.RDS")
 
 # extract joint posterior of the same size as nrow(reference_data)
 abc_posterior <- create_abc_posterior(abc_output = abc_output[[1]], comb_test = abc_output[[3]], sample_size = nrow(reference_data))
@@ -76,7 +76,7 @@ reference_data <- rename(reference_data, house_state = h_state)
 
 
 # on generated data
-png(filename = "Figures/ub_posterior_pred_plot.png", width = 15, height = 10, units = "cm", res = 1000)
+png(filename = "Figures/ub_posterior_pred_plot_bc_fix.png", width = 15, height = 10, units = "cm", res = 1000)
 
 alf <- 0.6
 cols <- c(adjustcolor( "#994048", alpha.f = alf), 
@@ -102,4 +102,6 @@ axis(2, at = c(1,2), labels = c("ger", "bashin"))
 transition_contrast(reference_data = reference_data)
 
 dev.off()
+
+
 

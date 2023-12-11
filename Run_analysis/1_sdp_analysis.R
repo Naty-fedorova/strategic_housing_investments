@@ -5,7 +5,7 @@ source("Functions/sim_var_functions.R")
 # run parameter sweep
 
 # number of runs for each parameter combination
-sim_runs <- 10
+sim_runs <- 1
 
 # generate jobs to sweep through
 jobs <- expand.grid(p_s_save = c(0.25, .5, .75),   
@@ -38,7 +38,7 @@ for(i in 1:nrow(jobs)){
 saveRDS(sim_output, file = "Data/sdp_model_param_sweep.RData")
 
 
-sim_output <- readRDS("Data/sdp_model_param_sweep.Rdata")
+sim_output <- readRDS("Data/sdp_model_param_sweep_bc_fix.RDS")
 
 # parameter sweep plot for each payoff scenario
 source("Scripts/sdp_param_sweep_plot.R")

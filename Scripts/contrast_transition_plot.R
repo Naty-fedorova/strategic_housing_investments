@@ -72,12 +72,12 @@ names(reference_data_6_1)[names(reference_data_6_1) == "h_state"] <- "house_stat
 
 
 
-png(filename = "Figures/contrast_transition_plot.png", width = 17 , height = 12, units = "cm", res = 500)
+png(filename = "Figures/contrast_transition_plot_bc_fix.png", width = 15 , height = 10, units = "cm", res = 500)
 
 par(mfrow = c(2,3), 
     mar = c(4,4,4,0),
-    oma = c(2,2,2,0),
-    family = "serif")
+    family = "serif",
+    oma = c(2,2,2,0))
 
 # nf <- layout(matrix(c(1,2,3,4,5,6,7,7), nrow = 4, ncol = 2, byrow = TRUE))
 # layout.show(nf)
@@ -97,7 +97,7 @@ mtext("Behavioral frequency", side = 2, line = 2)
 mtext("Building condition contrast for dwelling transitions", side = 3, outer = TRUE)
 
 mtext("I.", side = 3, line = 1, at = -5)
-mtext("Family priority", side = 3, line = 1, outer = FALSE)
+mtext("Family baseline", side = 3, line = 1, outer = FALSE)
 mtext(substitute(bold("Build condition = 0")), side = 2, line = 4)
 
 transition_contrast(reference_data = reference_data_3_0)
@@ -192,8 +192,12 @@ dev.off()
 
 build_table_s <- build_table
 
-png(filename = "Figures/contrast_transition_plot_ub.png", width = 17 , height = 10, units = "cm", res = 500)
-par(family = "serif")
+png(filename = "Figures/contrast_transition_plot_ub.png", width = 15 , height = 10, units = "cm", res = 500)
+
+par(mfrow = c(1,1), 
+    mar = c(4,4,4,1),
+    family = "serif")
+
 plot(x = 1, xlim = c(0,90), ylim = c(0.7,2.3), type = "n",
      yaxt = "n",
      ylab = "House state",

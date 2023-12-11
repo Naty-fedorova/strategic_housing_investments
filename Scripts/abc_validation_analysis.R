@@ -5,8 +5,8 @@ source("Functions/abc_validation.R")
 source("Functions/val_posterior.R")
 source("Functions/posterior_predictive_check.R")
 
-posterior_pred_output <- readRDS("Data/post_pred_output.RData")
-abc_validated <- readRDS("Data/validation_output_1e5.RData")
+posterior_pred_output <- readRDS("Data/post_pred_output_bc_fix.RDS")
+abc_validated <- readRDS("Data/validation_output_1e5_bc_fix.RDS")
 
 # abc validation 
 # n_comb_gen needs to be a factor of 4 ideally
@@ -14,7 +14,7 @@ abc_validated <- readRDS("Data/validation_output_1e5.RData")
 
 abc_val_runs <- abc_validate(n_comb_gen = 40, n_comb_test = 100000, cores = 80)
 
-saveRDS(abc_val_runs, file="validation_output_1e5.RData")
+saveRDS(abc_val_runs, file="validation_output_1e5.RDS")
 
 abc_validated <- abc_val_runs
 
@@ -26,7 +26,7 @@ sample_size <- 1000
 posterior_pred_output <- vector("list", length = length(abc_validated[[3]]) )
 
 # loop through all the generated reference_data in abc_val_runs
-for(i in 2:length(abc_validated[[3]])){
+for(i in 1:1){  # length(abc_validated[[3]])
   
   abc_slice <- as.data.frame(abc_validated[[1]][[i]])
   ref_slice <- as.data.frame(abc_validated[[3]][[i]])
@@ -45,7 +45,7 @@ for(i in 2:length(abc_validated[[3]])){
   
 }
 
-saveRDS(posterior_pred_output, file="post_pred_output.RData")
+saveRDS(posterior_pred_output, file="post_pred_output_bc_fix.RDS")
 
 
 # posterior_pred_output now has a list, each containing the sequences of differences calculated between ref data and generated data
@@ -137,7 +137,7 @@ output_col <- "#793e6e"
 
 
 
-png(filename = "Figures/val_and_post_pred.png", width = 15, height = 12, units = "cm", res = 500)
+png(filename = "Figures/val.png", width = 15, height = 12, units = "cm", res = 500)
 
 par(mfrow = c(2,3), 
     mar = c(3,4,3,2),
@@ -163,11 +163,11 @@ axis(2, at = seq(0, 1, length.out = 5))
 points(x = 1:segment, y = p_s_save[,"p_s_prior"], col = input_col, pch = 19, cex = circle_size)
 for(i in 1:segment){
   points(x = i, y = median(p_s_save_res[[i]][["p_s_prior"]]), col = output_col, cex = circle_size)
-  segments(x0 = i,
-           y0 = HPDI(p_s_save_res[[i]][["p_s_prior"]], prob = 0.89)[1],
-           x1 = i ,
-           y1 = HPDI(p_s_save_res[[i]][["p_s_prior"]], prob = 0.89)[2],
-           col = output_col)
+  #segments(x0 = i,
+           # y0 = HPDI(p_s_save_res[[i]][["p_s_prior"]], prob = 0.89)[1],
+           # x1 = i ,
+           # y1 = HPDI(p_s_save_res[[i]][["p_s_prior"]], prob = 0.89)[2],
+           # col = output_col)
   
   #j <- i 
   #points(x = i, y = post_pred_diff[j,], pch = "-", col = "coral")
@@ -192,12 +192,12 @@ axis(2, at = seq(0, 1, length.out = 5))
 points(x = 1:segment, y = p_l_move[,"p_l_prior"], col = input_col, pch = 19, cex = circle_size)
 for(i in 1:segment){
   points(x = i, y = median(p_l_move_res[[i]][["p_l_prior"]]), col = output_col, cex = circle_size)
-  segments(x0 = i,
-           y0 = HPDI(p_l_move_res[[i]][["p_l_prior"]], prob = 0.89)[1],
-           x1 = i ,
-           y1 = HPDI(p_l_move_res[[i]][["p_l_prior"]], prob = 0.89)[2],
-           col = output_col)
-  
+  #segments(x0 = i,
+           # y0 = HPDI(p_l_move_res[[i]][["p_l_prior"]], prob = 0.89)[1],
+           # x1 = i ,
+           # y1 = HPDI(p_l_move_res[[i]][["p_l_prior"]], prob = 0.89)[2],
+           # col = output_col)
+           # 
   #j <- i + segment
   #points(x = i, y = post_pred_diff[j,], pch = "-", col = "coral")
 }
@@ -217,11 +217,11 @@ axis(2, at = seq(0, 1, length.out = 5))
 points(x = 1:segment, y = p_h_build[,"p_h_prior"], col = input_col, pch = 19, cex = circle_size)
 for(i in 1:segment){
   points(x = i, y = median(p_h_build_res[[i]][["p_h_prior"]]), col = output_col, cex = circle_size)
-  segments(x0 = i,
-           y0 = HPDI(p_h_build_res[[i]][["p_h_prior"]], prob = 0.89)[1],
-           x1 = i ,
-           y1 = HPDI(p_h_build_res[[i]][["p_h_prior"]], prob = 0.89)[2],
-           col = output_col)
+  # segments(x0 = i,
+  #          y0 = HPDI(p_h_build_res[[i]][["p_h_prior"]], prob = 0.89)[1],
+  #          x1 = i ,
+  #          y1 = HPDI(p_h_build_res[[i]][["p_h_prior"]], prob = 0.89)[2],
+  #          col = output_col)
   
   #j <- i + (segment*2)
   #points(x = i, y = post_pred_diff[j,], pch = "-", col = "coral")

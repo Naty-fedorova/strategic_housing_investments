@@ -5,7 +5,7 @@ source("Functions/payoff_tree_plot.R")
 source("Functions/sim_var_functions.R")
 
 
-sim_output <- readRDS("Data/sdp_model_param_sweep.RData")
+sim_output <- readRDS("Data/sdp_model_param_sweep_bc_fix.RDS")
 
 beh_frq_sweep <- beh_frq(sim_output = sim_output)
 
@@ -17,7 +17,7 @@ jobs <- expand.grid(p_s_save = c(0.25, .5, .75),
                     build_condition = c(0,1),
                     scenario = c(2, 3, 4, 6))
 
-maxt <- 40
+maxt <- 40 # change according to sim_output if necessary
 
 tr <- 0.1 # transparency
 colors <- c("#FF5733", "#7DCFF7","#772854") # orange is build, blue is save, prune is move
@@ -30,9 +30,6 @@ par(mfrow = c(1, 3),
     mar = c(3,1,3,0),
     oma = c(0,0,4,0),
     family = "serif")
-
-mtext("Family Priority", side = 3)
-#mtext("A.", side = 3, line = 0, at = -1)
 
 scs <- c(3,4,6)
 texts <- c("Family Priority", "Additive", "House Priority")
@@ -81,7 +78,7 @@ text(x = 0, y = -0.5, "family", cex = cex , pos = 4)
 dev.off()
 
 
-png(filename = "Figures/key_contrast_plot.png", width = 17, height = 12, units = "cm", res = 500)
+png(filename = "Figures/key_contrast_plot_bc_fix.png", width = 17, height = 12, units = "cm", res = 500)
 
 par(mfrow = c(2, 3),
     mar = c(3,2,3,1),
@@ -98,7 +95,7 @@ plot(x = 1, y = 1,
      ylab = "",
      type = "n", 
      xlim = c(0, maxt), 
-     ylim = c(0, 110),
+     ylim = c(0, 110), # plotting will fail under different values of N - change to 1.1 * N
      xaxt = "n",
      yaxt = "n",
      bty = "n")

@@ -40,32 +40,30 @@ abc_runs <- function(n_comb = 100,
   
   
   # generate combinations
-  comb_test <- generate_combinations(n_comb = n_comb, N_agents = N, fix_param = fix_param)
-  
-  
-  # formulate combinations runs
-  run_sim <- n_comb
-  jobs_list <- list(1:run_sim)  
-  temp <- unname(comb_test)
-  rownames(temp) <- NULL
-  
-  jobs_list <- as.list(1:nrow(comb_test))
-  jobs_list[1:run_sim] <- as.list( as.data.frame(t(temp)) )
+  jobs <- generate_combinations(n_comb = n_comb, N_agents = N, fix_param = fix_param)
   
   reference_data <- prep_data(real = real_data, N_sim_agents = N, p_s_save = p_s_save, p_l_move = p_l_move, p_h_build = p_h_build, build_condition = build_condition, scenario = scenario)
   
   
-  # argumentize abc function
-  abc_arg_list <- function(arg_list) {
-    return(abc_loop(arg_list[1], arg_list[2], arg_list[3], arg_list[4], arg_list[5], arg_list[6], reference_data))
-  }
+  abc_sum_diff <- mclapply(1:n_comb,
+                         function(i) {
+                           if (i %% 100 == 0) print(i)
+                           out <- abc_loop(
+                             p_s_save = jobs$p_s_prior[i],
+                             p_l_move = jobs$p_l_prior[i],
+                             p_h_build = jobs$p_h_prior[i],
+                             scenario = jobs$payoff_prior[i],
+                             build_condition = jobs$build_cond_prior[i],
+                             N_agent = jobs$N_agents[i], # abc_loop never uses this
+                             reference_data = reference_data
+                           )
+                         },
+                         mc.cores = cores
+  )
   
-  
-  abc_output <- mclapply( jobs_list, abc_arg_list, mc.cores = cores)
-  
-  return(list(abc_output,
+  return(list(abc_sum_diff,
               reference_data,
-              comb_test))
+              jobs))
   
 }
 

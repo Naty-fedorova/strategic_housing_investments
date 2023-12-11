@@ -4,9 +4,9 @@ source("Functions/abc_posterior.R")
 # run abc
 # if wanting to run with synthetic data, real_data = "no"
 # look at documentation for abc_runs in Functions folder for details on input parameters
-abc_output <- abc_runs(n_comb = 10, N = 825, real_data = "yes")
+abc_output <- abc_runs(n_comb = 1e6, N = 825, real_data = "yes") # n_comb for analysis in manuscript is 1e6
 
-saveRDS(abc_output, file="Data/abc_output_1e6.RData")
+saveRDS(abc_output, file="Data/abc_output_1e6.RDS")
 
 
 # Where to from now?

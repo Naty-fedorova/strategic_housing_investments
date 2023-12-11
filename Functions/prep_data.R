@@ -28,7 +28,7 @@ prep_data <- function(real = "yes",
   if(real == "yes"){
     
     # load in cleaned data for both survey waves
-    reference_data <- read_csv("Data/data_for_analysis.csv")
+    reference_data <- read_csv("Data/data_for_analysis_anonym.csv")
 
     
   }else{

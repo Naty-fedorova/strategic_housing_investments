@@ -30,6 +30,7 @@ abc_loop <- function(    p_s_save = 0.6,
   final_payoffs <- final_payoff_func(scenario = scenario)
   
   # optimal strategy is calculated for adult life - 40 years (maxt = 41, because we start at year 1)
+  # note, if wanting to run the optimal strategy for a different number of years, here it needs to be total_years + 1
   optimal_strategy_output <- UB_optimal(states_h = 2, states_s = 2, states_l = 2, states_f = 3, final_payoffs = final_payoffs, maxt = 41, p_s_save = p_s_save, p_l_move = p_l_move, p_h_build = p_h_build, build_condition = build_condition)
   names(optimal_strategy_output[[2]]) <- c("maxt", "states_h", "states_s", "states_l", "states_f", "p_h_build", "p_s_save", "p_l_move","build_condition", "p_s_loss", "p_force_move")
   
