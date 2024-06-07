@@ -72,7 +72,7 @@ names(reference_data_6_1)[names(reference_data_6_1) == "h_state"] <- "house_stat
 
 
 
-png(filename = "Figures/contrast_transition_plot_bc_fix.png", width = 15 , height = 10, units = "cm", res = 500)
+png(filename = "Figures/contrast_transition_plot.png", width = 15 , height = 10, units = "cm", res = 500)
 
 par(mfrow = c(2,3), 
     mar = c(4,4,4,0),

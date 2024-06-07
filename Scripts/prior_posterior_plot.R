@@ -2,7 +2,7 @@
 
 source("Functions/abc_posterior.R")
 
-abc_output <- readRDS("Data/abc_output_1e4_bc_fix.RDS")
+abc_output <- readRDS("Data/abc_output_1e6_bc_fix.RDS")
 
 # extract joint posterior
 abc_posterior <- create_abc_posterior(abc_output = abc_output[[1]], comb_test = abc_output[[3]], sample_size = 1000)
@@ -12,7 +12,7 @@ comb_test <- abc_output[[3]]
 prior_col <- "#6e793e"
 posterior_col <- "#793e6e"
 
-png(filename = "Figures/posteriors_1e6_bc_fix.png", width = 14, height = 10, units = "cm", res = 500)
+png(filename = "Figures/posteriors_1e6.png", width = 14, height = 10, units = "cm", res = 500)
 
 par(mfrow = c(2,3), 
     mar = c(3,3,3,2),
@@ -24,7 +24,7 @@ layout.show(nf)
 
 plot(density(comb_test$p_s_prior), ylim = c(0,10), 
      col = prior_col,
-     main = "p to save when saving", 
+     main = "p_s_saving", 
      lwd = 3,
      xaxt = "n",
      xlab = "",
@@ -37,10 +37,11 @@ mtext("probability value", side = 1, line = 2, cex = 0.75)
 mtext("density", side = 2, line = 2, cex = 0.75)
 text(x = 0.37, y = 8, "posterior", col = posterior_col)
 text(x = 0.5, y = 2.8, "prior", col = prior_col)
+mtext("I.", side = 3, line = 1, at = -0.25)
 
 plot(density(comb_test$p_l_prior), ylim = c(0,10), 
      col = prior_col, 
-     main = "p of tenure when moving", 
+     main = "p_l_moving", 
      lwd = 3,
      xaxt = "n",
      ylab = "",
@@ -50,10 +51,11 @@ plot(density(comb_test$p_l_prior), ylim = c(0,10),
 lines(density(abc_posterior$p_l_prior), col = posterior_col, lwd = 3)
 axis(1, at = c(0,0.25,0.5,0.75,1))
 axis(2, at = c(0, 5, 10))
+mtext("II.", side = 3, line = 1, at = -0.25)
 
 plot(density(comb_test$p_h_prior), ylim = c(0,10), 
      col = prior_col, 
-     main = "p of house when building", 
+     main = "p_h_building", 
      lwd = 3,
      xaxt = "n",
      xlab = "",
@@ -63,6 +65,7 @@ plot(density(comb_test$p_h_prior), ylim = c(0,10),
 lines(density(abc_posterior$p_h_prior), col = posterior_col, lwd = 3)
 axis(1, at = c(0,0.25,0.5,0.75,1))
 axis(2, at = c(0, 5, 10))
+mtext("III.", side = 3, line = 1, at = -0.25)
 
 payoff_prior <- table(sample(comb_test$payoff_prior, size = 1000))
 payoff_posterior <- table(abc_posterior$payoff_prior)
@@ -73,7 +76,7 @@ test2 <- test2[ ,2:4]
 
 barplot(test2,beside=T, 
         col = c(prior_col, posterior_col),
-        main = "payoff scenario",
+        main = "Payoff scenario",
         xaxt = "n",
         yaxt = "n",
         ylim = c(0,600),
@@ -84,6 +87,7 @@ axis(1, at = c(2,5,8), labels = c("f_p", "add", "h_p"))
 axis(2, at = c(0,300,600))
 mtext("payoff value", side = 1, line = 2, cex = 0.75)
 mtext("frequency", side = 2, line = 2, cex = 0.75)
+mtext("IV.", side = 3, line = 1, at = -0.25)
 
 bc_prior <- table(sample(comb_test$build_cond_prior, size = 1000))
 bc_posterior <- table(abc_posterior$build_cond_prior)
@@ -101,6 +105,7 @@ barplot(test3,beside=T,
         border = NA)
 axis(1, at = c(2,5), labels = c("no", "yes"))
 axis(2, at = c(0,500,1000))
+mtext("V.", side = 3, line = 1, at = -0.25)
 
 # overall title
 mtext("Prior and posterior distributions of model parameters", side = 3, line = 1, outer = TRUE)

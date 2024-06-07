@@ -46,7 +46,11 @@ prep_data <- function(real = "yes",
     
     # initialize sim_d dataframe
     reference_data <- data.frame(agent_ind = 1:N_sim_agents)
+    
+    # time in UB, default is sample of times, but can also test second line, which is everyone staying for the full 40
     reference_data$time_in_ub <- sample(1:40, N_sim_agents, replace = TRUE)
+    #reference_data$time_in_ub <- rep(40, N_sim_agents)
+    
     reference_data$h_state <- NA
     reference_data$initial_house_state <- NA
     reference_data$h_state_change_t <- NA

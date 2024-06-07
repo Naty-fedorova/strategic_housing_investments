@@ -7,7 +7,7 @@ source("Functions/sim_var_functions.R")
 
 sim_output <- readRDS("Data/sdp_model_param_sweep_bc_fix.RDS")
 
-beh_frq_sweep <- beh_frq(sim_output = sim_output)
+beh_frq_sweep <- beh_frq(sim_output = sim_output, sim_runs = 2)
 
 jobs <- expand.grid(p_s_save = c(0.25, .5, .75),   
                     p_l_move = c(0.25, .5, .75),
@@ -101,10 +101,9 @@ plot(x = 1, y = 1,
      bty = "n")
 axis(2, at = c(0,50, 100), labels = TRUE)
 axis(1, labels = TRUE)
-axis(2, at = c(0,50, 100), labels = TRUE)
 mtext("Behavioral frequency", side = 2, line = 2)
 mtext("Time", side = 1, line = 3)
-mtext("IV.", side = 3, line = 0, at = -1)
+mtext("I.", side = 3, line = 0, at = -1)
 mtext("Family priority", side = 3, line = 0, at = 20)
 
 mtext(substitute(bold("Build condition = 0")), side = 2, line = 4)
@@ -126,7 +125,7 @@ plot(x = 1, y = 1,
      bty = "n")
 axis(1, labels = FALSE)
 axis(2, at = c(0,50, 100), labels = FALSE)
-mtext("V.", side = 3, line = 0, at = -1)
+mtext("II.", side = 3, line = 0, at = -1)
 mtext("Additive", side = 3, line = 0, at = 20)
 
 sweep_lines(selected_set = selected_set, beh_frq_sweep = beh_frq_sweep)
@@ -143,7 +142,7 @@ plot(x = 1, y = 1,
      xaxt = "n",
      yaxt = "n",
      bty = "n")
-mtext("VI.", side = 3, line = 0, at = -1)
+mtext("III.", side = 3, line = 0, at = -1)
 axis(1, labels = FALSE)
 axis(2, at = c(0,50, 100), labels = FALSE)
 mtext("House Priority", side = 3, line = 0, at = 20)
@@ -168,7 +167,7 @@ plot(x = 1, y = 1,
      bty = "n")
 axis(1, labels = FALSE)
 axis(2, at = c(0,50, 100), labels = FALSE)
-mtext("VII.", side = 3, line = 0, at = -1)
+mtext("IV.", side = 3, line = 0, at = -1)
 
 mtext(substitute(bold("Build condition = 1")), side = 2, line = 4)
 
@@ -188,7 +187,7 @@ plot(x = 1, y = 1,
      bty = "n")
 axis(1, labels = FALSE)
 axis(2, at = c(0,50, 100), labels = FALSE)
-mtext("VIII.", side = 3, line = 0, at = -1)
+mtext("V.", side = 3, line = 0, at = -1)
 
 sweep_lines(selected_set = selected_set, beh_frq_sweep = beh_frq_sweep)
 
@@ -206,7 +205,7 @@ plot(x = 1, y = 1,
      bty = "n")
 axis(1, labels = FALSE)
 axis(2, at = c(0,50, 100), labels = FALSE)
-mtext("IX.", side = 3, line = 0, at = -1)
+mtext("VI.", side = 3, line = 0, at = -1)
 
 sweep_lines(selected_set = selected_set, beh_frq_sweep = beh_frq_sweep)
 
