@@ -1,7 +1,7 @@
 source("Functions/abc_posterior.R")
 source("Functions/posterior_predict_data.R")
 
-abc_output <- readRDS("Data/abc_output_1e6_bc_fix.RDS") # check that this wasn't actually the 1e4 one
+abc_output <- readRDS("Data/abc_output_1e6_bc_fix.RDS") 
 reference_data <- read_csv("Data/data_for_analysis.csv")
 
 # order is 1-1 1-2 2-1 2-2
