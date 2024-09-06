@@ -6,8 +6,9 @@ date: '2023-02-03'
 
 ### Stochastic Dynamic Programming optimality model
 
-In this Rmd you can explore the outputs of the stochastic dynamic programming optimality model detailed in
-Fedorova & McElreath (2023). 
+In this Rmd you can explore the outputs of the stochastic dynamic programming optimality model detailed in this preprint: 
+
+Fedorova, N.; Kandler, A.; McElreath, R.(2024, February 28). Strategic housing decisions and the evolution of urban settlements: Optimality modeling and empirical application in Ulaanbaatar, Mongolia. https://doi.org/10.31235/osf.io/d4uvs
 
 In short, the model explores the trade-offs between building, moving, and saving, over time.The output is an optimal strategy through time, depending on the parameter space and what final payoff scenario is being optimized. The optimal strategy cannot be viewed directly, so instead we present two output forms:
 
